@@ -1,0 +1,4 @@
+
+courses/
+image_classification/fashion_mnist/data/fashion-mnist_train.csv
+image_classification/fashion_mnist/data/fashion-mnist_test.csv

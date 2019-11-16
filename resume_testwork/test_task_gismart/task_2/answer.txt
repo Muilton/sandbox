@@ -1,0 +1,49 @@
+0) 
+SELECT date, sum(revenue) 
+FROM revenue 
+GROUP BY date
+1)
+SELECT date, sum(revenue) 
+FROM revenue 
+GROUP BY date
+ORDER BY sum(revenue) DESC LIMIT 1
+2) 
+SELECT date, sum(revenue) 
+FROM revenue 
+GROUP BY date 
+ORDER BY sum(revenue) DESC LIMIT 1 OFFSET 1
+3) 
+SELECT campaign.name, sum(revenue) 
+FROM revenue, app, campaign 
+WHERE (STR_TO_DATE(revenue.date, '%m/%d/%Y') > '2018-01-31' AND 
+		revenue.app_id = app.app_id AND 
+		app.campaign_id = campaign.id) 
+GROUP BY campaign.name 
+ORDER BY sum(revenue) DESC LIMIT 1
+4) 
+SELECT 	MONTH(STR_TO_DATE(revenue.date, '%m/%d/%Y')) as month,
+		WEEK(STR_TO_DATE(revenue.date, '%m/%d/%Y'), 1) as week,
+		campaign.name as company_name,
+        sum(revenue)
+FROM revenue, app, campaign
+WHERE (revenue.app_id = app.app_id AND
+       app.campaign_id = campaign.id)
+GROUP BY MONTH(STR_TO_DATE(revenue.date, '%m/%d/%Y')),
+		 WEEK(STR_TO_DATE(revenue.date, '%m/%d/%Y'), 1), 
+         campaign.name
+5)
+SELECT 	STR_TO_DATE(revenue.date, '%m/%d/%Y') as period,
+		app.name as app_name,
+        AVG(revenue) as mean_revenue
+FROM revenue, app
+WHERE (STR_TO_DATE(revenue.date, '%m/%d/%Y') > '2018-01-14' AND
+	   STR_TO_DATE(revenue.date, '%m/%d/%Y') < '2018-02-16' AND
+	   revenue.app_id = app.app_id )
+GROUP BY app.name
+6)
+SELECT 	WEEK(STR_TO_DATE(revenue.date, '%m/%d/%Y'), 1) as week,
+        SUM(revenue) as revenue_by_week
+FROM revenue
+GROUP BY WEEK(STR_TO_DATE(revenue.date, '%m/%d/%Y'), 1)
+ORDER BY revenue_by_week DESC LIMIT 1
+
